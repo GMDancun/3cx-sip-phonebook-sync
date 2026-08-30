@@ -1,30 +1,78 @@
-# SIP Phone Phonebook Sync App
+# 3CX SIP Phonebook Sync
 
-A Django-based application for synchronizing SIP phonebooks from **3CX** to different SIP phone manufacturers.
+A Django-based platform for synchronizing **3CX contacts with SIP/IP phones** using vendor-specific Cloud Phonebook formats.
 
-### Supported Devices
-
-* Fanvil
-* Grandstream
-* Flyvoice
-* Panasonic
-
-### How It Works
+## Architecture
 
 ```text
-3CX CSV → PhoneSync → Manufacturer XML → SIP Phones
+3CX
+ │
+ │ Contacts
+ ▼
+PhoneSync
+ │
+ │ Vendor-specific XML
+ ▼
+SIP Phones
+ │
+ ├── Fanvil
+ ├── Grandstream
+ ├── FlyVoice
+ └── Panasonic
 ```
 
-### Tech Stack
+## Features
+
+* 3CX contact integration
+* Centralized phonebook management
+* Vendor-specific XML generation
+* Cloud Phonebook URLs
+* Multi-vendor SIP phone support
+* Django Admin interface
+* PostgreSQL support
+
+## Example
+
+A Fanvil phone can be configured with:
+
+```text
+http://10.20.12.10:8000/phonebooks/fanvil/x303p.xml
+```
+
+The phone retrieves the phonebook from PhoneSync through the configured Cloud Phonebook URL.
+
+## Tech Stack
 
 * Python
 * Django
-* Django REST Framework
 * PostgreSQL
-* XML / CSV
+* XML
+* Gunicorn
+* Nginx
+* Ubuntu Server
 
-### Status
+## Project Structure
 
-🚧 **Under Development**
+```text
+3cx-sip-phonebook-sync/
+├── manage.py
+├── config/
+├── phonebook/
+├── requirements.txt
+├── .env.example
+└── README.md
+```
 
-The project is currently being developed locally, with plans for cloud deployment and support for additional SIP phone manufacturers.
+## Roadmap
+
+* [x] Django phonebook management
+* [x] Fanvil phonebook support
+* [ ] Automated 3CX synchronization
+* [ ] Grandstream support
+* [ ] FlyVoice support
+* [ ] Panasonic support
+* [ ] Sync monitoring and logging
+
+## Purpose
+
+The goal is to provide a centralized solution for managing and distributing phonebooks across different SIP phone manufacturers from a single system.
