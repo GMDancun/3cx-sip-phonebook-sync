@@ -4,14 +4,16 @@ from . import views
 app_name = 'phonebook'
 
 urlpatterns = [
-    # Example: /p/fanvil/x303p.xml
+    # Device-facing phonebook endpoint, e.g. /p/fanvil/aBc123XyZ.xml
+    #
+    # manufacturer + token together select a PhonebookXML row, which
+    # authorizes the request. Content is generated live from PostgreSQL
+    # when a generator is registered for the manufacturer (see
+    # phonebook.generators), otherwise it falls back to a manually
+    # uploaded file.
     path(
-        "p/<str:manufacturer>/<str:token>.xml", views.phonebook_xml, name="phonebook_xml",
-    ),
-    path(
-        "phonebooks/fanvil/3cx.xml", views.fanvil_phonebook_xml, name="fanvil_3cx_phonebook",
-    ),
-    path(
-        "p/<str:manufacturer>/<str:token>.xml", views.dynamic_phonebook_xml, name="dynamic_phonebook_xml",
+        "p/<str:manufacturer>/<str:token>.xml",
+        views.phonebook_xml,
+        name="phonebook_xml",
     ),
 ]

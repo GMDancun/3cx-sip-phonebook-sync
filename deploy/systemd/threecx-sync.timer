@@ -1,0 +1,12 @@
+[Unit]
+Description=Run threecx-sync.service every 5 minutes
+
+[Timer]
+OnBootSec=2min
+OnUnitActiveSec=5min
+# Avoid the thundering-herd effect if you run this on multiple hosts:
+RandomizedDelaySec=30
+Persistent=true
+
+[Install]
+WantedBy=timers.target

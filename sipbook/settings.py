@@ -217,3 +217,34 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+# Cache used to briefly cache generated phonebook XML (see phonebook/views.py)
+# so a burst of phones polling at once doesn't hammer PostgreSQL. LocMemCache
+# is per-process, which is fine here — worst case each worker rebuilds the
+# XML once per cache window. Swap in a shared backend (e.g. Redis) if you're
+# running many workers and want them to share one cache.
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
+    }
+}
+
+# Makes `python manage.py sync_threecx` (run from cron/systemd/etc) log to
+# stdout/stderr so scheduler logs actually show sync results/failures.
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "handlers": {
+        "console": {
+            "class": "logging.StreamHandler",
+        },
+    },
+    "loggers": {
+        "integrations.sync": {
+            "handlers": ["console"],
+            "level": "INFO",
+            "propagate": False,
+        },
+    },
+}

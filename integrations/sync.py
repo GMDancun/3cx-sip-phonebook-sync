@@ -1,7 +1,11 @@
+import logging
+
 from django.utils import timezone
 
 from .models import ThreeCXUser
 from .threecx import ThreeCXClient
+
+logger = logging.getLogger("integrations.sync")
 
 
 def sync_threecx_users():
@@ -31,8 +35,10 @@ def sync_threecx_users():
         else:
             updated += 1
 
-    return {
+    result = {
         "created": created,
         "updated": updated,
         "total": len(users),
     }
+    logger.info("3CX sync: %s", result)
+    return result

@@ -1,0 +1,20 @@
+# Runs `manage.py sync_threecx` once. Triggered by threecx-sync.timer.
+#
+# Install:
+#   sudo cp threecx-sync.service threecx-sync.timer /etc/systemd/system/
+#   sudo systemctl daemon-reload
+#   sudo systemctl enable --now threecx-sync.timer
+#
+# Adjust User, WorkingDirectory and ExecStart's venv path for your host.
+[Unit]
+Description=Sync 3CX users into PostgreSQL for the Fanvil phonebook
+Wants=network-online.target
+After=network-online.target postgresql.service
+
+[Service]
+Type=oneshot
+User=sipbook
+WorkingDirectory=/opt/sipbook/phonezip
+ExecStart=/opt/sipbook/venv/bin/python manage.py sync_threecx
+# Uncomment if you keep secrets outside of BASE_DIR/.env:
+# EnvironmentFile=/opt/sipbook/phonezip/.env

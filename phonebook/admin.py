@@ -7,6 +7,7 @@ from django.utils.html import format_html
 from django.utils.timesince import timesince
 from django.utils import timezone
 
+from .generators import get_generator
 from .models import PhonebookXML, PhonebookAccessLog
 from sipbook import settings
 
@@ -97,6 +98,11 @@ class PhonebookXMLAdmin(admin.ModelAdmin):
     @admin.display(description="Xml file")
     def xml_filename_display(self, obj):
         if not obj.xml_file:
+            if get_generator(obj.manufacturer):
+                return format_html(
+                    '<span class="pb-empty">{}</span>',
+                    "Live — generated from PostgreSQL",
+                )
             return format_html('<span class="pb-empty">{}</span>', "No file")
 
         filename = os.path.basename(obj.xml_file.name)

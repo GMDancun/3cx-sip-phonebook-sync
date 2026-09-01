@@ -1,0 +1,5 @@
+# Simpler alternative to the systemd timer, if this host already uses cron.
+# Install with: crontab -e  (as the user that owns the venv/app)
+#
+# Runs every 5 minutes; stdout/stderr go to a log file so failures are visible.
+*/5 * * * * /opt/sipbook/venv/bin/python /opt/sipbook/phonezip/manage.py sync_threecx >> /var/log/sipbook/threecx-sync.log 2>&1

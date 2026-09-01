@@ -8,7 +8,16 @@ class PhonebookXML(models.Model):
     manufacturer = models.CharField(max_length=50)
     model = models.CharField(max_length=50)
     token = models.CharField(max_length=64, unique=True, editable=False, default=secrets.token_urlsafe)
-    xml_file = models.FileField(upload_to='phonebooks/')
+    xml_file = models.FileField(
+        upload_to='phonebooks/',
+        blank=True,
+        null=True,
+        help_text=(
+            "Only needed for manufacturers without a dynamic generator "
+            "(see phonebook.generators). Fanvil is generated live from "
+            "PostgreSQL and does not need a file uploaded here."
+        ),
+    )
     updated_at = models.DateTimeField(auto_now=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
